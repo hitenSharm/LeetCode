@@ -1,0 +1,41 @@
+// https://leetcode.com/problems/ones-and-zeroes
+
+#pragma GCC optimize("Ofast")  
+#pragma GCC target("avx,avx2,fma") 
+static auto _ = [] ()
+{ios_base::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);return 0;}();
+
+class Solution {
+public:
+    
+    int memo[601][101][101];
+    
+    int recu(vector<string>& strs , int m, int n,int index)
+    {
+        if(index>=strs.size() || m<0 || n<0)
+            return 0;   
+        if(m==0 && n==0)
+            return 0;
+    
+    if(memo[index][m][n]!=-1)
+    return memo[index][m][n];
+    
+    string s=strs[index];    
+    int zero=count(s.begin(),s.end(),'0');
+    int one=s.length()-zero;
+    
+    if(m>=zero && n>=one){
+        return memo[index][m][n]=max(recu(strs,m,n,index+1),1+recu(strs,m-zero,n-one,index+1));
+    }
+    else{
+        return memo[index][m][n]=recu(strs,m,n,index+1);
+    }
+    }
+
+
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        memset(memo,-1,sizeof(memo));
+        int ans=recu(strs,m,n,0);
+        return ans;
+    }
+};
