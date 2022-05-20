@@ -12,7 +12,7 @@ public:
 
 	void recu(int& ans,vector<int>vis,int& n,int curr)
 	{
-		if(curr>n)
+		if(curr==0)
 		{
 			ans++;
 			return ;
@@ -22,7 +22,7 @@ public:
 			if(vis[i]==0 and (i%curr==0 || curr%i==0))
 			{
 				vis[i]=1;
-				recu(ans,vis,n,curr+1);
+				recu(ans,vis,n,curr-1);
 				vis[i]=0;
 			}
 		}
@@ -32,7 +32,7 @@ public:
     int countArrangement(int n) {
         vector<int>vis(n+1,0);
 		int ans=0;		
-		recu(ans,vis,n,1);
+		recu(ans,vis,n,n);
 		return ans;
     }
 };
