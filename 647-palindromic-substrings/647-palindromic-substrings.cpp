@@ -24,15 +24,11 @@ public:
     int countSubstrings(string s) {
         if(s.size()==1)return 1;
         int ans=0;
-		int i=0,j=0;
+		int i=0;
 		while(i<s.size())
-		{
-			ans+=palin(s,i,j);
-			if(j+1<s.size())
-			{
-				j++;
-				ans+=palin(s,i,j);
-			}
+		{            
+			ans+=palin(s,i,i);
+			ans+=palin(s,i,i+1);
 			i++;
 		}
 		return ans;
