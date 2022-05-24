@@ -37,11 +37,11 @@ public:
 			}
 		}
 		vector<int>ans;
+        vector<int>vis(n,0);
 		for(int i=0;i<n;i++)
 		{
 			if(dp[i]==-1)
-			{
-				vector<int>vis(n,0);
+			{				
 				dfs(vis,dp,adj,i);
 			}
 			if(dp[i]==0)ans.push_back(i);
