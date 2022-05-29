@@ -1,35 +1,29 @@
 class Solution {
 public:
     int maxProduct(vector<string>& words) {
-        unordered_map<char,set<int>>ump;
+        vector<int>wordsInt(words.size(),0);
+		vector<int>wordLen(words.size(),0);
 		for(int i=0;i<words.size();i++)
 		{
-			string &s=words[i];
-			for(int j=0;j<s.size();j++)
+			int word_int=0;
+			for(int j=0;j<words[i].size();j++)
 			{
-				ump[s[j]].insert(i);
+				word_int=word_int|(1<<(words[i][j]-'a'));
+				//this kinda makes a word exists array in int form
+				//a=0
+				//b=10
+				//c=110 and so on
 			}
+			wordsInt[i]=word_int;//store the number formed
+			wordLen[i]=words[i].size();
 		}
 		int ans=0;
-		for(int i=0;i<words.size();i++)
+		for(int i=0;i<words.size()-1;i++)
 		{
-			string &s=words[i];
-			vector<int>vis(words.size(),0);
-			for(int j=0;j<s.size();j++)
+			for(int j=i+1;j<words.size();j++)
 			{
-				set<int>& st=ump[s[j]];
-				for(const int &it:st)
-				{
-					vis[it]=1;
-				}
-			}
-			for(int j=vis.size()-1;j>=0;j--)
-			{
-				if(vis[j]==0)
-				{
-					int t1=words[j].size()*words[i].size();
-					ans=max(ans,t1);
-				}
+				if((wordsInt[i] & wordsInt[j])==0)//this cheks if any bit matches
+				ans=max(ans,wordLen[i]*wordLen[j]);
 			}
 		}
 		return ans;
