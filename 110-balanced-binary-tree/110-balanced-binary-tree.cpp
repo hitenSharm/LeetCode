@@ -3,7 +3,7 @@ public:
     int fl=0;
 	int recu(TreeNode* root)
 	{
-		if(!root)return 0;
+		if(!root || fl==1)return 0;
 		int l=1+recu(root->left);
 		int r=1+recu(root->right);
 		if(abs(l-r)>1)fl=1;
