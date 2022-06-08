@@ -14,17 +14,13 @@ public:
     queue<int>q;
     void push(int x) {
         queue<int>tmp;
-		while(!q.empty())
-		{
-			tmp.push(q.front());
-			q.pop();
-		}
-		q.push(x);
-		while(!tmp.empty())
-		{
-			q.push(tmp.front());
-			tmp.pop();
-		}
+		tmp.push(x);
+        while(!q.empty())
+        {
+            tmp.push(q.front());
+            q.pop();
+        }
+        swap(q,tmp);
     }
     
     int pop() {
