@@ -20,9 +20,9 @@ public:
 		{
 			(i==nums.size()-1 ? rightMax[i]=nums[i] : rightMax[i]=max(rightMax[i+1],nums[i]));
 		}
-		for(int i=0;i<nums.size();i++)
+		for(int i=1;i<nums.size()-1;i++)
 		{
-			if(leftMin[i]<nums[i] and rightMax[i]>nums[i])return true;
+			if(leftMin[i-1]<nums[i] and rightMax[i+1]>nums[i])return true;
 			//this would mean that at nums[i] there is a value on  its left which is smaller than current
 			//and on right that is larger than current
 		}
