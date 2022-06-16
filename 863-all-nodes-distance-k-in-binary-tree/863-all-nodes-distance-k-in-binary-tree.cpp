@@ -1,12 +1,11 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+static auto _ = []() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cout.tie(nullptr);
+  return 0;
+}();
 class Solution {
 public:
     int fl=0;
@@ -26,12 +25,7 @@ public:
         recu(root,qt,target);
         vector<int>ans;
         TreeNode* prev=nullptr;
-        int lvl=0;
-        // while(!qt.empty())
-        // {
-        //     cout<<qt.top()->val<<endl;
-        //     qt.pop();
-        // }
+        int lvl=0;        
         while(!qt.empty() and k-lvl>=0)
         {
             TreeNode* curr=qt.top();
