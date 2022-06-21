@@ -8,13 +8,7 @@ static auto _ = []() {
 }();
 
 class Solution {
-public:    
-    bool isSafe(int i,int j,vector<vector<int>>& grid2)
-    {
-        if(i<0 || j<0 || i>=grid2.size() || j>=grid2[0].size() || grid2[i][j]!=1)return false;
-        
-        return true;
-    }
+public:        
     int dirs[5]={-1,0,1,0,-1};
     void recu(vector<vector<int>>& grid1, vector<vector<int>>& grid2,int i,int j,bool& ans)
     {
@@ -23,6 +17,7 @@ public:
         {
             ans=false;
             //if no return then i can mark the whole island in grid2 in 1 iteration
+            //this return has good concept
         }
         grid2[i][j]=2;
         for(int k=0;k<4;++k)
