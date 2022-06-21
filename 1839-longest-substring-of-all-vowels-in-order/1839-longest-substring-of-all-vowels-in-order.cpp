@@ -1,3 +1,11 @@
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+static auto _ = []() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cout.tie(nullptr);
+  return 0;
+}();
 class Solution {
 public:
     int longestBeautifulSubstring(string word) {
@@ -14,8 +22,7 @@ public:
                 {
                     if(start+1<5 and word[i]==validate[start+1])start++;
                     i++;
-                }
-                //cout<<i<<"  i and j "<<j<<endl;
+                }                
                 if(word[i-1]=='u')len=max(len,i-j);
                 j=i;
             }    
