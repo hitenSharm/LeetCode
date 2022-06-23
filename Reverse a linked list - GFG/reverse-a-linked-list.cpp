@@ -38,18 +38,14 @@ class Solution
         if(!head || !head->next)return head;
         Node* prev=nullptr;
         Node* curr=head;
-        Node* fwd=head->next;
-        while(fwd)
+        while(curr)
         {
-            Node* tmp1=fwd;
-            Node* tmp2=fwd->next;
+            Node* tmp1=curr->next;
             curr->next=prev;
             prev=curr;
-            fwd->next=curr;
             curr=tmp1;
-            fwd=tmp2;
         }
-        return curr;
+        return prev;
     }
     
 };
