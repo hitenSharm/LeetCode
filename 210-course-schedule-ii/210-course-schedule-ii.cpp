@@ -4,7 +4,7 @@ public:
 	unordered_set<int>traversedNodes;
 	bool valid=true;
 
-	void recu(int curr,unordered_map<int,vector<int>>& adjList,vector<int>vis)
+	void recu(int curr,unordered_map<int,vector<int>>& adjList,vector<int>& vis)
 	{		
 		if(!valid)return ;
 		vis[curr]=1;
@@ -26,6 +26,7 @@ public:
 			if(traversedNodes.find(candid[i])!=traversedNodes.end())continue ;
 			recu(candid[i],adjList,vis);            
 		}
+        vis[curr]=0;
 		st.push(curr);
 	}
 
@@ -34,11 +35,11 @@ public:
 
         for(int i=0;i<prerequisites.size();i++)
         	adjList[prerequisites[i][0]].push_back(prerequisites[i][1]);
-                
+        
+        vector<int>vis(numCourses,0);                
         for(int i=0;i<numCourses;i++)
         {
-        	if(traversedNodes.find(i)!=traversedNodes.end())continue ;
-        	vector<int>vis(numCourses,0);
+        	if(traversedNodes.find(i)!=traversedNodes.end())continue ;        	
         	recu(i,adjList,vis);
         	if(!valid)return {};
         }        
