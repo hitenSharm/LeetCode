@@ -12,18 +12,19 @@
 class Solution {
 public:
 
-    bool recu(long long mini,long long maxi,TreeNode* r)
-    {
-        if(!r)return true;
-        if(r->val<maxi and r->val>mini)
-        {
-            return (recu(mini,r->val,r->left) && recu(r->val,maxi,r->right));
-        }
-        return false;
-    }
+	bool recu(TreeNode* root,long long mini,long long maxi)
+	{
+		if(!root)return true;        
+		if(root->val>mini and root->val<maxi)
+		{            
+			return (recu(root->left,mini,root->val) and recu(root->right,root->val,maxi));
+		}
+		else
+			return false;
+	}
 
     bool isValidBST(TreeNode* root) {
-        if(!root)return true;        
-        return (recu(LLONG_MIN,root->val,root->left) && recu(root->val,LLONG_MAX,root->right));
+        if(!root)return true;
+        return (recu(root->left,LLONG_MIN,root->val) and recu(root->right,root->val,LLONG_MAX));
     }
 };
