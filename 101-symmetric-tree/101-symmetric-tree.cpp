@@ -12,14 +12,18 @@
 class Solution {
 public:
 
-    bool recu(TreeNode* r1,TreeNode* r2)
+    bool traverse(TreeNode* l,TreeNode* r)
     {
-        if(!r1 and !r2)return true;
-        if(!r1 || !r2 || r1->val!=r2->val)return false;
-        return (recu(r1->left,r2->right) && recu(r1->right,r2->left));
+        if(!l and !r)return true;
+        if(!l || !r)return false;
+        if(r->val!=l->val)return false;
+        
+        return (traverse(l->left,r->right) and traverse(l->right,r->left));
     }
 
     bool isSymmetric(TreeNode* root) {
-        return recu(root->left,root->right);
+        if(!root)return true;
+        
+        return traverse(root->left,root->right);
     }
 };
