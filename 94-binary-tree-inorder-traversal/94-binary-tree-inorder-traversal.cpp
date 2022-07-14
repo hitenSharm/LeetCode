@@ -1,32 +1,40 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-class Solution {
-public:
-    vector<int> inorderTraversal(TreeNode* root) {
-        if(!root)return {};
-        stack<TreeNode*>st;        
-        vector<int>ans;
-        while(root || !st.empty())
+class Solution
+{
+    public:
+        vector<int> inorderTraversal(TreeNode *root)
         {
-            while(root)    
+            vector<int> ans;
+            while (root)
             {
-                st.push(root);
-                root=root->left;
+                if (!root->left)
+                {
+                    ans.push_back(root->val);
+                    root = root->right;
+                   	//as no leftmost so we dont need to make thread to connect 
+                }
+                else
+                {
+                    TreeNode *prev = root->left;
+                    while (prev->right and prev->right != root)	//all connections happen from the left side, i go to the rightmost node in the left tree
+                    {
+                        prev = prev->right;
+                    }
+                   	//no thread
+                    if (!prev->right)
+                    {
+                        prev->right = root;	//make thread
+                       	//as the connection is made, go to the node
+                        root = root->left;
+                    }
+                    else
+                    {
+                       	//this means there is a thread present
+                        prev->right = nullptr;
+                        ans.push_back(root->val);
+                        root = root->right;	//as when i arrived here it meant i finished my traversal                    
+                    }
+                }
             }
-            root=st.top();
-            ans.push_back(root->val);
-            st.pop();
-            root=root->right;
+            return ans;
         }
-        return ans;
-    }
 };
