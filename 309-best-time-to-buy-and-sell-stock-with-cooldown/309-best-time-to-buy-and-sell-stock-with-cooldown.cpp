@@ -1,32 +1,32 @@
 class Solution {
 public:
-    int dp[5001][2][2];
-    int recu(int i,vector<int>& p,int byOrsell,int c)
+
+    vector<vector<int>>dp;
+
+    int recu(vector<int>& prices,int bs,int index)
     {
-        if(i==p.size())return 0;
-        if(dp[i][byOrsell][c]!=-1)return dp[i][byOrsell][c];
-        if(c==1)
+        if(index>=prices.size())return 0;        
+        int ans=0;
+        if(dp[index][bs]!=-1)return dp[index][bs];
+        if(bs==0)
         {
-            return recu(i+1,p,0,0);
-        }
-        int ans=recu(i+1,p,byOrsell,c);
-        if(byOrsell==0)
-        {
-            //buy
-            int t1=recu(i+1,p,1,c)-p[i];
-            ans=max(ans,t1);
+            //can buy
+            int t1=recu(prices,bs,index+1);
+            int t2=recu(prices,1,index+1) - prices[index];
+            ans = max(t1,t2);
         }
         else
         {
-            int t2=recu(i+1,p,0,1)+p[i];
-            ans=max(ans,t2);
+            //can sell
+            int t1=recu(prices,bs,index+1);
+            int t2=recu(prices,0,index+2) + prices[index];
+            ans = max(t1,t2);
         }
-        return dp[i][byOrsell][c]=ans;
+        return dp[index][bs]=ans;
     }
+
     int maxProfit(vector<int>& prices) {
-        memset(dp,-1,sizeof(dp));
-        int x = recu(0,prices,0,0);        
-        if(x<0)x=0;
-        return x;
+        dp.resize(prices.size(),vector<int>(2,-1));
+        return recu(prices,0,0);
     }
 };
