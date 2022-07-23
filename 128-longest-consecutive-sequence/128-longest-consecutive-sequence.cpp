@@ -1,34 +1,31 @@
 class Solution {
 public:
     
-    vector<int>vis;
-    
-    int recu(vector<int>& nums,int i,unordered_map<int,int>& ump,vector<int>& dp)
+    int recu(vector<int>& dp,unordered_map<int,int>& ump,int element)
     {        
-        if(dp[i]!=-1)return dp[i];
-        int ans=0;
-        vis[ump[nums[i]]]=1;
-        if(ump.find(nums[i]+1)!=ump.end() and vis[ump[nums[i]+1]]==0)
-        {            
-            ans=ans+1+recu(nums,ump[nums[i]+1],ump,dp);
+        int index=ump[element];
+        if(dp[index]!=-1)return dp[index];
+        int ans=1;
+        if(ump.find(element+1)!=ump.end())
+        {
+            ans+=recu(dp,ump,element+1);
         }
-        if(ump.find(nums[i]-1)!=ump.end() and vis[ump[nums[i]-1]]==0)
-        {            
-            ans=ans+1+recu(nums,ump[nums[i]-1],ump,dp);
-        }
-        return dp[i]=ans;
+        //this way i am just going fwd and if that element has explored all possobo=iliteis ahead of itself
+        //i can return it
+        return dp[index]=ans;
     }
-
+    
     int longestConsecutive(vector<int>& nums) {
-        vis.resize(nums.size(),0);
         vector<int>dp(nums.size(),-1);
         unordered_map<int,int>ump;
+        
         for(int i=0;i<nums.size();i++)ump[nums[i]]=i;
-        int ans=0;        
+        
+        int ans=0;
         for(int i=0;i<nums.size();i++)
         {
-            ans=max(ans,1+recu(nums,i,ump,dp));            
+            ans=max(ans,recu(dp,ump,nums[i]));
         }
-        return ans;
+        return ans;   
     }
 };
