@@ -1,11 +1,19 @@
 class Solution {
 public:
     int findDuplicate(vector<int>& nums) {
-        sort(nums.begin(),nums.end());
-        for(int i=0;i<nums.size()-1;i++)
+        //o(n)   and o(1) concept is by using linked list concept
+        int slow=nums[0];
+        int fast=nums[0];
+        do{
+            slow=nums[slow];
+            fast=nums[nums[fast]];//move twice
+        }while(slow!=fast);
+        fast=nums[0];//head
+        while(slow!=fast)
         {
-            if(nums[i]==nums[i+1])return nums[i];
+            slow=nums[slow];
+            fast=nums[fast];
         }
-        return -1;
+        return slow;
     }
 };
