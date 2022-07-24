@@ -1,19 +1,28 @@
 class Solution {
 public:
     void sortColors(vector<int>& nums) {
-        int arr[3]={0,0,0};
-        for(int i=0;i<nums.size();i++)
+        //dutch algo
+        int l=0,r=nums.size()-1;
+        int m=0;
+        //all ele behind l are 0
+        //all ele after r are 2
+        while(m<=r)
         {
-            arr[nums[i]]++;
-        }
-        int doneTill=0;
-        for(int i=0;i<3;i++)
-        {
-            while(arr[i]--)
+            if(nums[m]==0)
             {
-                nums[doneTill]=i;
-                doneTill++;
+                //should be on left of l
+                swap(nums[l],nums[m]);
+                l++;
+                m++;
             }
+            else if(nums[m]==2)
+            {
+                //with r
+                swap(nums[m],nums[r]);
+                r--;
+            }
+            else//m has 1
+                m++;
         }
     }
 };
