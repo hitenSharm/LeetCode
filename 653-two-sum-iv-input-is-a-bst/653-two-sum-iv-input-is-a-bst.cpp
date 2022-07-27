@@ -1,20 +1,74 @@
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
-static auto _ = []() {
-  ios_base::sync_with_stdio(false);
-  cin.tie(nullptr);
-  cout.tie(nullptr);
-  return 0;
-}();
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
 public:
-    unordered_set<int>ust;
+    
+    stack<TreeNode*>sti;
+    stack<TreeNode*>stj;
+    
+    void initialise(TreeNode* root)
+    {
+        TreeNode* temp=root;
+        while(temp){
+            sti.push(temp);
+            temp=temp->left;
+        }
+        temp=root;
+        while(temp){
+            stj.push(temp);
+            temp=temp->right;//this is to get the reverse inorder array 
+        }
+    }
+    
+    void moveNext()
+    {
+        if(sti.empty())return ;
+        TreeNode* temp=sti.top();
+        sti.pop();
+        if(temp->right){
+            temp=temp->right;
+            while(temp){
+                sti.push(temp);
+                temp=temp->left;
+            }
+        }        
+    }
+    
+    void moveBack()
+    {
+        if(stj.empty())return ;
+        TreeNode* temp=stj.top();
+        stj.pop();
+        if(temp->left){
+            temp=temp->left;
+            while(temp){
+                stj.push(temp);
+                temp=temp->right;
+            }
+        }
+    }
+    
     bool findTarget(TreeNode* root, int k) {
-        if(!root)return false;
-        //inorder and map is obvious. array and map is obvious
-        //nlogn is also obvious, har element ke liye seacrh for the other element        
-        if(ust.find(k-root->val)!=ust.end())return true;
-        ust.insert(root->val);
-        return (findTarget(root->left,k) || findTarget(root->right,k));
+       //to do in o(n) and o(h) make next and before using stacks like in bst iterator 
+        initialise(root);
+        while(!sti.empty() and !stj.empty() and sti.top()!=stj.top())
+        {
+            if(sti.top()->val+stj.top()->val<k){
+                moveNext();
+            }else if(sti.top()->val+stj.top()->val>k){
+                moveBack();
+            }else if(sti.top()->val+stj.top()->val==k)
+                return true;
+        }
+        return false;
     }
 };
