@@ -1,33 +1,35 @@
 class Solution {
 public:
+    
+    bool isGood(int i,vector<int>& nums)
+    {
+        if(i==0 || nums[i]>nums[i-1])return true;
+        return false;
+    }
+    
     int removeDuplicates(vector<int>& nums) {
-        int i=0,j=0;
-        while(i<nums.size())
+        int i=0;
+        int j=1;
+        int isValid=0;
+        while(j<nums.size() and nums[j]==nums[i])
         {
-            int curr=nums[i];
-            i++;
-            while(i<nums.size() and curr==nums[i])
+            j++;
+        }
+        while(j<nums.size() and i<nums.size())
+        {
+            if(j<i)j=i+1;
+            if(isGood(i,nums))
             {
-                nums[i]=-101;
+                isValid=i;
                 i++;
             }
-        }
-        i=0;
-        while(i<nums.size())
-        {
-            if(j<i)j=i;
-            if(nums[i]!=-101)i++;
             else
             {                
-                while(j<nums.size() and nums[j]==-101)j++;
-                if(j<nums.size())
                 swap(nums[i],nums[j]);
-                i++;
-            }
-        }        
-        i=0;
-        while(i<nums.size() and nums[i]!=-101)
-            i++;
-        return i;
+                if(isGood(i,nums))isValid=i;
+                j++;
+            }            
+        }
+        return isValid+1;
     }
 };
