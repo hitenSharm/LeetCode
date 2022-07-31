@@ -1,3 +1,11 @@
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+static auto _ = []() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cout.tie(nullptr);
+  return 0;
+}();
 class Solution {
 public:
     bool lemonadeChange(vector<int>& bills) {
@@ -13,7 +21,7 @@ public:
                 cnt10++;
             }
             else
-            {                
+            {     //10,5 has higher priority to sub than 5,5,5 as 10 can't be reused much, so if we can, then use it           
                 if(cnt10>=1 and cnt5>=1)
                 {
                     cnt10--;cnt5--;
