@@ -11,15 +11,38 @@
  */
 class Solution {
 public:
-    
-    bool isValid(TreeNode* root,long long mini,long long maxi)
-    {
-        if(!root)return true;
-        if(root->val<=mini || root->val>=maxi)return false;
-        return isValid(root->left,mini,root->val) && isValid(root->right,root->val,maxi);
-    }
-    
     bool isValidBST(TreeNode* root) {
-        return isValid(root->left,LLONG_MIN,root->val) && isValid(root->right,root->val,LLONG_MAX);
+        bool ans=true;
+        long long curr=LLONG_MIN;
+        while(root)
+        {
+            if(!root->left)
+            {
+                if(root->val<=curr)ans=false;
+                curr=root->val;
+                root=root->right;
+            }
+            else
+            {
+                TreeNode* temp=root->left;
+                while(temp->right and temp->right!=root)
+                {
+                    temp=temp->right;
+                }
+                if(!temp->right)
+                {
+                    temp->right=root;
+                    root=root->left;
+                }
+                else
+                {
+                    temp->right=nullptr;
+                    if(root->val<=curr)ans=false;
+                    curr=root->val;
+                    root=root->right;
+                }
+            }
+        }
+        return ans;
     }
 };
