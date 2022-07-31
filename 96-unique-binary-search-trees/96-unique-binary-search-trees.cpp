@@ -1,19 +1,21 @@
 class Solution {
 public:
-    int dp[20];
-    int recu(int n)
+    
+    int recu(int n,vector<int>& dp)
     {
-        if(n<=1)return 1;
+        if(n<=0)return 1;
+        if(n==1 || n==2)return n;
         if(dp[n]!=-1)return dp[n];
         int ans=0;
-        for(int j=0;j<n;j++)
-        {
-            ans+=recu(j) * recu(n-j-1);
-        }
+        for(int i=1;i<=n;i++)
+            ans+=recu(i-1,dp)*recu(n-i,dp);
         return dp[n]=ans;
     }
+    
+    
     int numTrees(int n) {
-        memset(dp,-1,sizeof(dp));
-        return recu(n);
+      //partition dp  
+        vector<int>dp(n+1,-1);
+        return recu(n,dp);
     }
 };
