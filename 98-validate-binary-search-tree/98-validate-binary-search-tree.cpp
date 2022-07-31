@@ -11,20 +11,15 @@
  */
 class Solution {
 public:
-
-	bool recu(TreeNode* root,long long mini,long long maxi)
-	{
-		if(!root)return true;        
-		if(root->val>mini and root->val<maxi)
-		{            
-			return (recu(root->left,mini,root->val) and recu(root->right,root->val,maxi));
-		}
-		else
-			return false;
-	}
-
-    bool isValidBST(TreeNode* root) {
+    
+    bool isValid(TreeNode* root,long long mini,long long maxi)
+    {
         if(!root)return true;
-        return (recu(root->left,LLONG_MIN,root->val) and recu(root->right,root->val,LLONG_MAX));
+        if(root->val<=mini || root->val>=maxi)return false;
+        return isValid(root->left,mini,root->val) && isValid(root->right,root->val,maxi);
+    }
+    
+    bool isValidBST(TreeNode* root) {
+        return isValid(root->left,LLONG_MIN,root->val) && isValid(root->right,root->val,LLONG_MAX);
     }
 };
