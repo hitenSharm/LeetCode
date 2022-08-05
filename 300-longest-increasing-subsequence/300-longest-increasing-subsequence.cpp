@@ -1,31 +1,32 @@
 class Solution {
 public:
-    int dp[2501][2501];
-    // int recu(vector<int>& nums,int prev,int index)
-    // {
-    //     if(index>=nums.size())return 0;
-    //     int ans=recu(nums,prev,index+1);//no take or cant take
-    //     if(prev==-1 || nums[index]>nums[prev])
-    //         ans=max(ans,1+recu(nums,index,index+1)); //if can take
-    //     return ans;
-    // }
     
-    int recu(vector<int>& nums,int prev,int index)
+    int getLower(int x,vector<int>& temp)
     {
-        if(index>=nums.size())return 0;
-        if(dp[prev+1][index]!=-1)return dp[prev+1][index];
-        
-        int ans=recu(nums,prev,index+1);//no take or cant take        
-        if(prev==-1 || nums[index]>nums[prev])
-            ans=max(ans,1+recu(nums,index,index+1)); //if can take
-        return dp[prev+1][index]=ans;
+        int l=0,r=temp.size()-1;
+        while(l<=r)
+        {
+            int m = l+(r-l)/2;
+            if(temp[m]>=x)
+                r=m-1;
+            else
+                l=m+1;
+        }
+        return l;
     }
     
-    int lengthOfLIS(vector<int>& nums) {
-        //do in form of prev index and current index
-        //if i take an element then i update the prev index for the new recu
-        //else i let my prev index be same and move fwd
-        memset(dp,-1,sizeof(dp));
-        return recu(nums,-1,0);
+    int lengthOfLIS(vector<int>& arr) {
+        vector<int>temp;
+        temp.push_back(arr[0]);
+        for(int i=1;i<arr.size();i++)
+        {
+            if(arr[i]>temp.back())temp.push_back(arr[i]);//increaseing the length
+            else
+            {
+                int index=getLower(arr[i],temp);
+                temp[index]=arr[i]; //replace element
+            }
+        }
+        return temp.size();
     }
 };
