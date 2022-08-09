@@ -1,31 +1,30 @@
 class Solution {
 public:
-    typedef pair<int,int>pi;
     vector<int> topKFrequent(vector<int>& nums, int k) {
-        //nlogk Solution
-        unordered_map<int,int>ump;
-        for(int i=0;i<nums.size();i++)ump[nums[i]]++;
-        priority_queue<pi,vector<pi>,greater<pi>>minHeap;
-        for(auto it:ump)
+        //frequncy sort kinda calc freq of each ele and based and then use another map to grp same freq ele together
+        //max freq possible is arr size so jusr traverse the highest freq possible to get k elements
+        unordered_map<int, int>freqCnt;
+        
+        for (auto i : nums)freqCnt[i]++;
+
+        unordered_map<int, vector<int>>freq;
+
+        for (auto it : freqCnt) {
+            freq[it.second].push_back(it.first);
+        }
+        int r = nums.size();
+        vector<int>ans;
+        while (ans.size() < k)
         {
-            if(minHeap.size()<k)
-            minHeap.push({it.second,it.first});
-            else
+            if (freq.find(r) != freq.end())
             {
-                //cout<<minHeap.top().first<<" "<<it.second<<endl;
-                if(minHeap.top().first<it.second)
-                {
-                    minHeap.pop();
-                    minHeap.push({it.second,it.first});
+                vector<int>& ele = freq[r];
+                for (auto it : ele) {
+                    ans.push_back(it);
+                    if (ans.size() == k)break;
                 }
             }
-        }
-        vector<int>ans;
-        while(!minHeap.empty())
-        {
-            //cout<<minHeap.top().second<<" "<<minHeap.top().first<<endl;
-            ans.push_back(minHeap.top().second);
-            minHeap.pop();
+            r--;
         }
         return ans;
     }
