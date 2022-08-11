@@ -11,19 +11,26 @@
  */
 class Solution {
 public:
-    int index=0;
-    TreeNode* makeTree(vector<int>& preorder,int ub)
+    int index = 0;
+
+    TreeNode* makeTree(int mini, int maxi, vector<int>& preorder)
     {
-        if(index>=preorder.size() || preorder[index]>=ub)return nullptr;
-        TreeNode* root=new TreeNode(preorder[index]);
+        if (index>=preorder.size() || preorder[index]<mini || preorder[index]>maxi)return nullptr;//out of range of valid bst
+        TreeNode* root = new TreeNode(preorder[index]);
         index++;
-        root->left=makeTree(preorder,preorder[index-1]);
-        root->right=makeTree(preorder,ub);
+        root->left = makeTree(mini, root->val, preorder);
+        root->right = makeTree(root->val, maxi, preorder);
         return root;
     }
-    
-    TreeNode* bstFromPreorder(vector<int>& preorder) {        
-        int ub=INT_MAX;
-        return makeTree(preorder,ub);
+
+    TreeNode* bstFromPreorder(vector<int>& preorder) {
+        int mini = INT_MIN;
+        int maxi = INT_MAX;
+        TreeNode* root = new TreeNode(preorder[index]);
+        index++;
+        root->left = makeTree(mini, root->val, preorder);
+        root->right = makeTree(root->val, maxi, preorder);
+
+        return root;
     }
 };
