@@ -1,18 +1,17 @@
 class Solution {
 public:
     int maxArea(vector<int>& height) {
-        int i=0,j=height.size()-1;
+        int l=0;
+        int r=height.size()-1;
         int area=0;
-        // https://leetcode.com/problems/container-with-most-water/discuss/200246/Proof-by-formula
-        //jis side pe height kam hai,udhar obv fir height for all possible cases fix ho jayegi
-        //and agar mein width kam karta toh obv area will become lesser
-        while(i!=j)
+        while(l<=r)
         {
-            area=max(area,min(height[i],height[j])*(j-i));
-            if(min(height[i],height[j])==height[i])i++;
+            area=max(min(height[l],height[r])*(r-l),area);
+            if(min(height[l],height[r])==height[l])l++;
             else
-            j--;
+                r--;
         }
         return area;
+            
     }
 };
