@@ -10,26 +10,23 @@
  * };
  */
 class Solution {
-public:
-    int ans = 0;
+public:    
 
-    void traverse(TreeNode* root,int res)
+    int traverse(TreeNode* root,int res)
     {
-        if (!root)return;
+        if (!root)return 0;
 
         res = res * 10 + root->val;
 
         if (!root->left and !root->right)
-        {
-            ans += res;
-            return;
+        {        
+            return res;
         }
-        traverse(root->left, res);
-        traverse(root->right, res);
+        return traverse(root->left, res)+traverse(root->right, res);        
     }
 
     int sumNumbers(TreeNode* root) {
-        traverse(root,0);
-        return ans;
+        //o(n) & o(1)+aux space
+        return traverse(root,0);        
     }
 };
