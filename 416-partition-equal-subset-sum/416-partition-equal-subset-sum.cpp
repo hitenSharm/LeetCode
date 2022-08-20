@@ -1,25 +1,27 @@
 class Solution {
 public:
     vector<vector<int>>dp;
-    int ts=0;
-    bool recu(vector<int>& nums,int s1,int s2,int index)
+    bool sumK(vector<int>& nums,int t,int i)
     {
-        if(index>=nums.size())
-        {
-            if(s1==s2)return true;
-            return false;
-        }
-        if(dp[s1][index]!=-1)return (dp[s1][index] == 0 ? true : false);
-        if(dp[s2][index]!=-1)return (dp[s2][index] == 0 ? true : false);
-        bool ans=(recu(nums,s1+nums[index],s2,index+1) || recu(nums,s1,s2+nums[index],index+1));
-        dp[s1][index]=dp[s2][index]=(ans ? 0 : 1);
+        if(t==0)return true;
+        if(i>=nums.size() || t<0)return false;
+        
+        if(dp[i][t]!=-1)return dp[i][t]==1 ? true : false;
+        
+        bool ans=sumK(nums,t,i+1);
+        ans=ans || sumK(nums,t-nums[i],i+1);
+        if(ans)dp[i][t]=1;
+        else
+            dp[i][t]=0;
         return ans;
     }
     
-    bool canPartition(vector<int>& nums) {        
-        int s=accumulate(nums.begin(),nums.end(),0);
-        ts=s;
-        dp.resize(s,vector<int>(nums.size(),-1));
-        return recu(nums,0,0,0);
+    bool canPartition(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        int s=0;
+        for(auto i:nums)s+=i;
+        if(s%2!=0)return false;
+        dp.resize(nums.size(),vector<int>(s/2+1,-1));
+        return sumK(nums,s/2,0);
     }
 };
