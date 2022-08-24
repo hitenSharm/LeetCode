@@ -26,8 +26,9 @@ class Solution {
         return dots==3;
     }
     
-    void recu(string& s,string temp,int index)
+    void recu(string& s,string temp,int index,int dots)
     {
+        if(dots>3 and index!=s.size())return ;
         if(index>=s.size())
         {
             if(isvalid(temp))
@@ -40,15 +41,22 @@ class Solution {
         {
             if(i==s.size()-1)temp+=s[i];
             else
+            {
                 temp=temp + s[i]+".";
-            recu(s,temp,i+1);
-            if(temp.back()=='.')temp.pop_back();
+                dots++;
+            }
+            recu(s,temp,i+1,dots);
+            if(temp.back()=='.'){
+                temp.pop_back();
+                dots--;
+            }
         }
     }
     
     vector<string> restoreIpAddresses(string s) {
         string temp="";
-        recu(s,temp,0);
+        int dots=0;
+        recu(s,temp,0,dots);
         return ans;
     }
 };
