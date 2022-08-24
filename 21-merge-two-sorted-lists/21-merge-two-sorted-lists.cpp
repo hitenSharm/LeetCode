@@ -1,5 +1,5 @@
 /**
- * Definition for singly-linked list->
+ * Definition for singly-linked list.
  * struct ListNode {
  *     int val;
  *     ListNode *next;
@@ -11,35 +11,24 @@
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        if(!list1)return list2;
-        if(!list2)return list1;
-        ListNode* head = (list1->val<=list2->val ? new ListNode(list1->val) : new ListNode(list2->val));
-        if(head->val==list1->val)
-            list1=list1->next;
-        else
-            list2=list2->next;
-        ListNode* curr=head;
-        while(list2 and list1)
+        ListNode* dummy=new ListNode(-1);
+        ListNode* dh=dummy;
+        while(list1 and list2)
         {
-            curr->next = (list1->val<=list2->val ? new ListNode(list1->val) : new ListNode(list2->val));
-            if(curr->next->val==list1->val)
+            if(list1->val<list2->val)
+            {
+                dummy->next=list1;
                 list1=list1->next;
+            }
             else
-                list2=list2->next; 
-            curr=curr->next;
+            {
+                dummy->next=list2;
+                list2=list2->next;
+            }
+            dummy=dummy->next;
         }
-        while(list1)
-        {
-            curr->next=new ListNode(list1->val);
-            curr=curr->next;
-            list1=list1->next;
-        }
-        while(list2)
-        {
-            curr->next=new ListNode(list2->val);
-            curr=curr->next;
-            list2=list2->next;
-        }
-        return head;
+        if(list1)dummy->next=list1;
+        if(list2)dummy->next=list2;
+        return dh->next;
     }
 };
