@@ -18,29 +18,40 @@ public:
 
 class Solution {
 public:
+    
     void traverse(Node* root)
-    {      
-        if(!root->left and !root->right)return ;
-        Node* tp=root;
-        while(tp)
-        {            
-            if(tp->left and tp->right)
+    {
+        if((!root->left and !root->right))return ; //return if leaf node
+        Node* curr=root;
+        Node* connectNext;
+        while(curr)
+        {
+            Node* c1=curr->left;
+            Node* c2=curr->right;            
+            if(c1 and c2){
+                c1->next=c2;
+                connectNext=c2;
+            }else if(c1)
             {
-                tp->left->next=tp->right;            
+                connectNext=c1;
             }
-            Node* toConnect=tp->right!=NULL ? tp->right : tp->left; 
-            Node* tfp= tp->next;
-            if(tfp)
-            {                
-                toConnect->next = tfp->left != NULL ? tfp->left : tfp->right;
+            else if(c2){
+                connectNext=c2;
             }
-            tp=tfp;
-        }
-        if(root->left)traverse(root->left);
-        if(root->right)traverse(root->right);
+            
+            if(curr->next)
+            {
+                connectNext->next=(curr->next->left!=nullptr ? curr->next->left : curr->next->right);
+            }
+            curr=curr->next;
+        }        
+        traverse(root->left);
+        traverse(root->right);
     }
-    Node* connect(Node* root) {    
+    
+    Node* connect(Node* root) {
         if(!root)return root;
+        root->next=nullptr;
         traverse(root);
         return root;
     }
