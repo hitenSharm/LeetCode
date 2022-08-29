@@ -1,36 +1,36 @@
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
-static auto _ = []() {
-  ios_base::sync_with_stdio(false);
-  cin.tie(nullptr);
-  cout.tie(nullptr);
-  return 0;
-}();
 class Solution {
 public:
-
-    int dirs[5]={-1,0,1,0,-1};
-    void recu(vector<vector<char>>& grid,int i,int j)
+    
+    void bfs(int i,int j,vector<vector<char>>& grid)
     {
-        if(i<0 || j<0 || i>=grid.size() || j>=grid[0].size() || grid[i][j]!='1')return ;
-        grid[i][j]='0';       
-        for(int k=0;k<4;++k) 
+        int dirs[5]={-1,0,1,0,-1};
+        queue<pair<int,int>>q;
+        q.push({i,j});
+        while(!q.empty())
         {
-            recu(grid,i+dirs[k],j+dirs[k+1]);
+            pair<int,int>p=q.front();
+            q.pop();
+            for(int k=0;k<4;k++)
+            {
+                int ni=dirs[k]+p.first;
+                int nj=dirs[k+1]+p.second;
+                if(ni>=0 and nj>=0 and ni<grid.size() and nj<grid[0].size() and grid[ni][nj]=='1'){
+                    grid[ni][nj]='0';
+                    q.push({ni,nj});
+                }
+            }
         }
     }
-
+    
     int numIslands(vector<vector<char>>& grid) {
         int ans=0;
-        for(int i=0;i<grid.size();++i)
+        for(int i=0;i<grid.size();i++)
         {
-            for(int j=0;j<grid[0].size();++j)
+            for(int j=0;j<grid[0].size();j++)
             {
-                if(grid[i][j]=='1')
-                {
-                    ans++;
-                    recu(grid,i,j);
-                }
+                if(grid[i][j]=='0')continue ;
+                ans++;
+                bfs(i,j,grid);
             }
         }
         return ans;
