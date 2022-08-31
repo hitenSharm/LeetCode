@@ -1,66 +1,73 @@
 class Solution {
 public:
 
-    vector<vector<int>> bfs(int i, int j, vector<vector<int>>& ht)
+    vector<vector<int>> bfs(vector<vector<int>>& ht,int toAdd)
     {
-        queue<pair<int, int>>q;
-        vector<vector<int>> ans(ht.size(),vector<int>(ht[0].size(),-1));
-        if (i == 0 and j == 0)
+        int dirs[5]={-1,0,1,0,-1};
+        
+        queue<pair<int,int>>q;
+        
+        vector<vector<int>>mark(ht.size(),vector<int>(ht[0].size(),-1));
+        
+        if(toAdd==1)
         {
-            for (int k = 0; k < ht.size(); k++)
+            for(int i=0;i<ht.size();i++)
             {
-                q.push({ k,0 });
-                ans[k][0] = 1;
+                q.push({i,0});
+                mark[i][0]=1;
             }
-            for (int k = 0; k < ht[0].size(); k++)
+            for(int j=1;j<ht[0].size();j++)
             {
-                q.push({ 0,k });
-                ans[0][k] = 1;
+                q.push({0,j});
+                mark[0][j]=1;
             }
         }
         else
         {
-            for (int k = i; k >=0; k--)
+            for(int i=ht.size()-1;i>=0;i--)
             {
-                q.push({ k,j });
-                ans[k][j] = 1;
+                q.push({i,ht[0].size()-1});
+                mark[i][ht[0].size()-1]=1;
             }
-            for (int k = j; k >= 0; k--)
+            for(int j=ht[0].size()-2;j>=0;j--)
             {
-                q.push({ i,k });
-                ans[i][k] = 1;
+                q.push({ht.size()-1,j});
+                mark[ht.size()-1][j]=1;
             }
         }
-        int dirs[5] = { -1,0,1,0,-1 };
-        while (!q.empty())
+        
+        while(!q.empty())
         {
-            pair<int, int> p = q.front();
+            pair<int,int> p=q.front();
             q.pop();
-            for (int k = 0; k < 4; k++)
+            int i=p.first,j=p.second;            
+            int curr=ht[i][j];
+            for(int k=0;k<4;k++)
             {
-                int ni = p.first + dirs[k], nj = p.second + dirs[k + 1];
-                if (ni < 0 || nj < 0 || ni >= ht.size() || nj >= ht[0].size() || ans[ni][nj] != -1)continue;
-                if (ht[ni][nj] >= ht[p.first][p.second]) {
-                    q.push({ ni,nj });
-                    ans[ni][nj] = 1;
+                int ni=i+dirs[k];
+                int nj=j+dirs[k+1];
+                if(ni>=0 and nj>=0 and ni<ht.size() and nj<ht[0].size() and ht[ni][nj]>=curr and mark[ni][nj]==-1)
+                {
+                    mark[ni][nj]=1;
+                    q.push({ni,nj});
                 }
             }
         }
-        return ans;
+        return mark;
     }
 
     vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
-        vector<vector<int>> pf = bfs(0, 0, heights);
-        int n = heights.size() - 1,m=heights[0].size()-1;
-        vector<vector<int>> atl = bfs(n, m, heights);
-
-        vector<vector<int>> ans;
-
-        for (int i = 0; i < pf.size(); i++)
+        
+        vector<vector<int>> pf = bfs(heights,1);
+        vector<vector<int>> atl = bfs(heights,2);
+        
+        vector<vector<int>>ans;
+        
+        for(int i=0;i<heights.size();i++)
         {
-            for (int j = 0; j < pf[0].size(); j++)
+            for(int j=0;j<heights[0].size();j++)
             {
-                if (pf[i][j] == 1 and atl[i][j] == 1)ans.push_back({ i,j });
+                if(pf[i][j]==atl[i][j] and pf[i][j]==1)ans.push_back({i,j});
             }
         }
         return ans;
