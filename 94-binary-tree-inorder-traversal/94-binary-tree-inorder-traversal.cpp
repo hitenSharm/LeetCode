@@ -23,7 +23,7 @@ class Solution
                     if (!prev->right)
                     {
                         prev->right = root;	//make thread
-                       	//as the connection is made, go to the node
+                       	//as the connection is made, go to the node, PS if i move the array push back here, we get preorder
                         root = root->left;
                     }
                     else
@@ -32,6 +32,7 @@ class Solution
                         prev->right = nullptr;
                         ans.push_back(root->val);
                         root = root->right;	//as when i arrived here it meant i finished my traversal                    
+                        //destroy thread->push root ->val go right
                     }
                 }
             }
