@@ -10,18 +10,18 @@ public:
         return p[node]=findParent(p[node]);
     }
     
-    void insertDsu(int a,int b)
+    int insertDsu(int a,int b)
     {
         a=findParent(a);
         b=findParent(b);
-        if(a==b)return ;
+        if(a==b)return 0;
         
         if(siz[a]>siz[b])swap(a,b);
         //attach smaller to larger tree always!
         //a is smaller one abd b is larger one
         p[a]=b;
         siz[b]+=siz[a];
-        
+        return 1;
     }
     
     int countComponents(int n, vector<vector<int>>& edges) {
@@ -34,15 +34,9 @@ public:
         
         for(auto i:edges)
         {   
-            insertDsu(i[0],i[1]);
-        }
-        unordered_set<int>ust;
-        for(int i=0;i<n;i++)
-        {
-            ust.insert(findParent(i));
+            n-=insertDsu(i[0],i[1]);
         }
         
-        
-        return ust.size();
+        return n;
     }
 };
