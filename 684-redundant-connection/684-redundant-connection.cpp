@@ -1,48 +1,54 @@
 class Solution {
 public:
-    
-    unordered_map<int,vector<int>>adj;
-    set<pair<int,int>>cycle;
-    unordered_set<int>vis;
-    int dfs(int curr,int p)
+    int p[1001];
+    int r[1001];
+    //ranks is like levels in the tree
+    int findParent(int n)
     {
-        if(vis.find(curr)!=vis.end())return curr;
-        vector<int>& candi=adj[curr];
-        vis.insert(curr);
-        int x=-1;
-        for(auto i: candi)
-        {
-            if(i==p)continue ;
-            x=dfs(i,curr);
-            if(x!=-1 and x!=curr)
-            {
-               // cout<<i<<" "<<curr<<endl;
-                cycle.insert({i,curr});
-                cycle.insert({curr,i});
-                return x;
-            }
-            else if(x!=-1 and x==curr)
-            {
-                cycle.insert({i,curr});
-                cycle.insert({curr,i});
-                return -1;
-            }
-        }
-        return -1;
+        if(n==p[n])return n;
+        //recursively find mega parent in the dsu
+        return p[n]=findParent(p[n]); //path compression
     }
     
-    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
-        //collect all part of cycle nodes
+    void insertDsu(int v1,int v2)
+    {
+        int parent=findParent(v1);
+        int parent2=findParent(v2);
+        if(r[parent]<r[parent2])
+        {
+            p[v1]=parent2;
+        }
+        else if(r[parent]>r[parent2]) //parent rank
+        {
+            p[v2]=parent;
+        }
+        else
+        {
+            p[v2]=parent;
+            r[parent]++;
+        }
+    }
+    //tc constant in amortized time complexity for dsu part, overall its linear
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {        
+        for(int i=0;i<1001;i++)
+        {
+            p[i]=i;
+            r[i]=0;
+        }
+        int ans;
         for(int i=0;i<edges.size();i++)
-        {
-            adj[edges[i][0]].push_back(edges[i][1]);
-            adj[edges[i][1]].push_back(edges[i][0]);
+        {                        
+            int parent1=findParent(p[edges[i][1]]);
+            int parent2=findParent(p[edges[i][0]]);
+            if(parent1==parent2)ans=i;
+            //this needs to be checked first!!!! if parents are same
+            // => both can follow a path and get to same point
+            // and as it is in edges this means there is a path from i1,i2
+            // therefore part of a cycle!
+            
+            p[parent1]=parent2; //this is being done without path compression
+            
         }
-        dfs(1,-1);
-        for(int i=edges.size()-1;i>=0;i--)
-        {
-            if(cycle.find({edges[i][0],edges[i][1]})!=cycle.end())return {edges[i][0],edges[i][1]};
-        }
-        return {};
+        return edges[ans];
     }
 };
