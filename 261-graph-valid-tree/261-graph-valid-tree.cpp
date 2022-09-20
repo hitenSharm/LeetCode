@@ -27,6 +27,8 @@ public:
         //dfs on undirected cycle
         //bfs undirected is startigup check visited
         //best approach put in dsu and at each insert if getting same parent => cycle
+        if(edges.size()!=n-1)return false;
+        //n-1 edges needed at  to make tree
         for(int i=0;i<=n;i++)
         {
             par[i]=i;
@@ -39,9 +41,11 @@ public:
                         
             if(dsu(a,b))return false;
         }
-        int p=findParent(0);
-        for(int i=1;i<n;i++)
-            if(p!=findParent(i))return false;
+        
+        // int p=findParent(0);
+        // //this is to make sure that there is only 1 tree
+        // for(int i=1;i<n;i++)
+        //     if(p!=findParent(i))return false;
         
         return true;
     }
