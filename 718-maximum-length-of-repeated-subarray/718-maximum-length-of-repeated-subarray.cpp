@@ -1,3 +1,12 @@
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+static auto _ = []() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  cout.tie(nullptr);
+  return 0;
+}();
+
 class Solution {
 public:
     int ans=0;
@@ -6,7 +15,7 @@ public:
     {
         if(i>=n1.size() || j>=n2.size())return 0;
         if(dp[i][j]!=-1)return dp[i][j];
-        int temp=max(recu(n1,n2,i+1,j),recu(n1,n2,i,j+1));
+        int temp=max(recu(n1,n2,i+1,j),recu(n1,n2,i,j+1));//first we explore wether we include or exclude the index
         int t2;
         if(n1[i]==n2[j])
         {
@@ -14,8 +23,8 @@ public:
             temp=max(temp,1+t2);            
         }
         ans=max(ans,temp);
-        if(n1[i]==n2[j])return dp[i][j]=1+t2;
-        return dp[i][j]=0;
+        if(n1[i]==n2[j])return dp[i][j]=1+t2; //if element is equal we can do 1+recu()
+        return dp[i][j]=0;//when elements are not equal we have to skip elements and return a 0
     }
     
     int findLength(vector<int>& nums1, vector<int>& nums2) {
