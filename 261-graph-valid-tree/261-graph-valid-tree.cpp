@@ -28,7 +28,7 @@ public:
         //bfs undirected is startigup check visited
         //best approach put in dsu and at each insert if getting same parent => cycle
         if(edges.size()!=n-1)return false;
-        //n-1 edges needed at  to make tree
+        //n-1 edges needed exactly to make tree
         for(int i=0;i<=n;i++)
         {
             par[i]=i;
