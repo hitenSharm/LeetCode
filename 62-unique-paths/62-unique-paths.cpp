@@ -1,20 +1,27 @@
 class Solution {
 public:
-    
-    int recu(vector<vector<int>>& dp,int i,int j,int& m,int& n)
-    {
-        if(i==m-1 and j==n-1)return 1;
-        
-        if(dp[i][j]!=-1)return dp[i][j];
-        
-        int t1=0,t2=0;
-        if(i+1<m)t1=recu(dp,i+1,j,m,n);
-        if(j+1<n)t2=recu(dp,i,j+1,m,n);
-        return dp[i][j]=t1+t2;
-    }
 
     int uniquePaths(int m, int n) {
-        vector<vector<int>>dp(m,vector<int>(n,-1));
-        return recu(dp,0,0,m,n);
+        if(m==1 || n==1)return 1;
+        int dp[101][101];
+        
+        dp[1][1]=1;
+        
+        for(int i=1;i<=m;i++)
+            dp[i][1]=1;
+        
+        for(int i=1;i<=n;i++)
+            dp[1][i]=1;
+        
+        for(int i=2;i<=m;i++)
+        {
+            for(int j=2;j<=n;j++)
+            {
+                dp[i][j]=dp[i-1][j]+dp[i][j-1];
+
+            }
+        }
+                     
+        return dp[m][n];
     }
 };
