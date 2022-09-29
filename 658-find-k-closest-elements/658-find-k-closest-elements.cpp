@@ -31,37 +31,38 @@ public:
         int idx=getIndex(arr,x);
         int i=idx-1;
         int j=idx+1;
-        vector<int>ans;
-        k--;
-        ans.push_back(arr[idx]);
+        vector<int>ans(k);
+        k--;        
         while(k--)
         {
             if(i>=0 and j<arr.size())
             {
                 if(abs(arr[i]-x)>abs(arr[j]-x))
-                {
-                    ans.push_back(arr[j]);
+                {                    
                     j++;
                 }
                 else
-                {
-                    ans.push_back(arr[i]);
+                {                    
                     i--;
                 }
             }
             else if(i>=0)
-            {
-                ans.push_back(arr[i]);
+            {                
                 i--;
             }
             else if(j<arr.size())
-            {
-                ans.push_back(arr[j]);
+            {                
                 j++;
             }
                 
         }
-        sort(ans.begin(),ans.end());
+        idx=0;
+        for(int k=i+1;k<j;k++)
+        {
+            ans[idx]=arr[k];
+            idx++;
+        }
+        
         return ans;
     }
 };
