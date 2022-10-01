@@ -1,33 +1,38 @@
 class Solution {
 public:
-    unordered_set<string>ust;
-    vector<int>dp;
-    int recu(int index,string& s)
+
+    unordered_set<string>valids;
+    int dp[100];
+    int recu(string& s, int i)
     {
-        if(index>=s.size())
-        {            
-            return 1;
-        }   
-        if(dp[index]!=-1)return dp[index];
-        string temp="";
-        int ans=0;
-        int currIndex=index;
-        while(index<s.size())
-        {
-            temp+=s[index];
-            if(ust.find(temp)==ust.end())break ;
-            ans+=recu(index+1,s);
-            index++;
-        }    
-        return dp[currIndex]=ans;    
+        if (i >= s.size())return 1;
+        if (dp[i] != -1)return dp[i];
+        //take one
+        string s1 = "";
+        s1 += s[i];
+        int t1 = 0;
+        if (valids.find(s1) != valids.end()) {
+            t1 = recu(s, i + 1);
+        }
+        int t2 = 0;
+        if (i + 1 < s.size()) {
+            string s2 = "";
+            s2 += s[i];
+            s2 += s[i + 1];
+            if (valids.find(s2) != valids.end())
+            {
+                t2 = recu(s, i + 2);
+            }
+        }
+        return dp[i]=t1 + t2;
     }
 
-    int numDecodings(string s) {        
-        dp.resize(s.size(),-1);
-        for(int i=1;i<=26;i++)
+    int numDecodings(string s) {
+        memset(dp, -1, sizeof(dp));
+        for (int i = 1; i <= 26; i++)
         {
-            ust.insert(to_string(i));
-        }        
-        return recu(0,s);
+            valids.insert(to_string(i));
+        }
+        return recu(s, 0);
     }
 };
