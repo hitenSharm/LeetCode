@@ -10,24 +10,21 @@ static auto _ = []() {
 class Solution {
 public:
     int minCost(string colors, vector<int>& neededTime) {
-        int ans=0;
-        priority_queue<int,vector<int>,greater<int>>pq;
-        for(int i=0;i<colors.size()-1;)
+        int ans=0;       
+        //can be done with sliding winodw , we want the smallest n-1 elements from a winodw of size n
+        //add all and keep track f maximum
+        int i=0,j=0;
+        while(i<colors.size())
         {
-            char curr=colors[i];
-            pq.push(neededTime[i]);
-            i++;
-            while(i<colors.size() and colors[i]==curr)
+            int maxi=0;
+            while(j<colors.size() and colors[j]==colors[i])
             {
-                pq.push(neededTime[i]);
-                i++;
+                ans+=neededTime[j];
+                maxi=max(maxi,neededTime[j]);
+                j++;
             }
-            while(pq.size()>1)
-            {
-                ans+=pq.top();
-                pq.pop();
-            }
-            pq.pop();
+            ans-=maxi;
+            i=j;
         }
         return ans;
     }
