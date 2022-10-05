@@ -1,52 +1,46 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+static auto _ = []() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    return 0;
+}();
 class Solution {
 public:
     TreeNode* addOneRow(TreeNode* root, int val, int depth) {
-        if(depth==1)
-        {
-            TreeNode* newVal=new TreeNode(val);
-            newVal->left=root;
-            return newVal;
+        if(depth==1){
+            TreeNode* r=new TreeNode(val);
+            r->left=root;
+            return r;
         }
-        int d=1;
         queue<TreeNode*>q;
+        int lvl = 1;
         q.push(root);
-        while(!q.empty() and d!=depth)
+        while (!q.empty())
         {
-            int len=q.size();
-            for(int i=0;i<len;++i)
+            int len = q.size();
+            while (len--)
             {
-                TreeNode* curr=q.front();
+                TreeNode* curr = q.front();
                 q.pop();
-                if(!curr)continue;
-                if(d==depth-1)
-                {
-                    TreeNode* newValLeft=new TreeNode(val);
-                    TreeNode* newValRight=new TreeNode(val);
-                    TreeNode* realChildLeft=curr->left;
-                    TreeNode* realChildRight=curr->right;
-                    curr->left=newValLeft;
-                    curr->right=newValRight;
-                    newValLeft->left=realChildLeft;
-                    newValRight->right=realChildRight;
+                if (lvl == depth - 1) {
+                    TreeNode* rl = curr->left;
+                    TreeNode* rr = curr->right;
+                    curr->left = new TreeNode(val);
+                    curr->right = new TreeNode(val);
+                    curr->left->left = rl;
+                    curr->right->right = rr;
                 }
-                else
-                {
+                if (curr->left) {
                     q.push(curr->left);
+                }
+                if (curr->right) {
                     q.push(curr->right);
                 }
             }
-            d++;
+            lvl++;
+            if (lvl == depth)break;
         }
         return root;
     }
