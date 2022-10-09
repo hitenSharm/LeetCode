@@ -11,63 +11,61 @@
  */
 class Solution {
 public:
+    stack<TreeNode*>stl;
+    stack<TreeNode*>str;
     
-    stack<TreeNode*>sti;
-    stack<TreeNode*>stj;
-    
-    void initialise(TreeNode* root)
+    void init(TreeNode* root)
     {
         TreeNode* temp=root;
         while(temp){
-            sti.push(temp);
+            stl.push(temp);
             temp=temp->left;
         }
         temp=root;
-        while(temp){
-            stj.push(temp);
-            temp=temp->right;//this is to get the reverse inorder array 
+        while(temp)
+        {
+            str.push(temp);
+            temp=temp->right;
         }
     }
     
     void moveNext()
     {
-        if(sti.empty())return ;
-        TreeNode* temp=sti.top();
-        sti.pop();
-        if(temp->right){
-            temp=temp->right;
-            while(temp){
-                sti.push(temp);
-                temp=temp->left;
-            }
-        }        
-    }
-    
-    void moveBack()
-    {
-        if(stj.empty())return ;
-        TreeNode* temp=stj.top();
-        stj.pop();
-        if(temp->left){
+        TreeNode* temp=stl.top();
+        stl.pop();
+        temp=temp->right;
+        while(temp)
+        {
+            stl.push(temp);
             temp=temp->left;
-            while(temp){
-                stj.push(temp);
-                temp=temp->right;
-            }
         }
     }
+    void moveBack()
+    {
+        TreeNode* temp=str.top();
+        str.pop();
+        temp=temp->left;
+        while(temp)
+        {
+            str.push(temp);
+            temp=temp->right;
+        }
+    }  
     
     bool findTarget(TreeNode* root, int k) {
-       //to do in o(n) and o(h) make next and before using stacks like in bst iterator 
-        initialise(root);
-        while(!sti.empty() and !stj.empty() and sti.top()!=stj.top())
+        //o(n) & o(n) is obvious
+        //o(n) & o(h) space using bst iterator is better
+        init(root);
+        while(stl.top()!=str.top())
         {
-            if(sti.top()->val+stj.top()->val<k){
-                moveNext();
-            }else if(sti.top()->val+stj.top()->val>k){
-                moveBack();
-            }else if(sti.top()->val+stj.top()->val==k)
+            if(stl.top()->val+str.top()->val==k){
                 return true;
+            }
+            if(stl.top()->val+str.top()->val<k){
+                moveNext();
+            }
+            else
+                moveBack();
         }
         return false;
     }
