@@ -10,19 +10,18 @@ static auto _ = []() {
 class Solution {
 public:
     bool increasingTriplet(vector<int>& nums) {
-        vector<int>prefix(nums.size());
-        vector<int>suff(nums.size());
-        prefix[0]=nums[0];
-        for(int i=1;i<nums.size();i++)
-            prefix[i]=min(prefix[i-1],nums[i]);
-        suff[nums.size()-1]=nums.back();
-        for(int i=nums.size()-2;i>=0;i--)
+        int a=INT_MAX;
+        int b=INT_MAX;
+        for(auto i:nums)
         {
-            suff[i]=max(suff[i+1],nums[i]);            
-        }
-        for(int i=1;i<nums.size()-1;i++)
-        {
-            if(nums[i]>prefix[i-1] and nums[i]<suff[i+1])return true;
+            if(i<=a){
+                a=i;
+            }else if(i<=b)
+            {
+                b=i;
+            }
+            else
+                return true;
         }
         return false;
     }
