@@ -11,7 +11,9 @@ public:
     
     string get(string key, int timestamp) {
       auto it = ump[key].upper_bound(timestamp);
-      return it == ump[key].begin() ? "" : prev(it)->second;
+        if(it == ump[key].begin() )return "";
+      it--;
+        return it->second;
     }
 };
 
