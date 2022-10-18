@@ -1,28 +1,32 @@
 class Solution {
 public:
-    vector<int>dp;
-    int recu(unordered_map<int,int>& ump,int i,vector<int>& nums)
-    {
-        if(dp[i]!=-1)return dp[i];
-        int ele=nums[i];
-        if(ump.find(ele+1)!=ump.end())
-        {
-            return dp[i]=1+recu(ump,ump[ele+1],nums);
-        }
-        return dp[i]=1;
-    }
-    
     int longestConsecutive(vector<int>& nums) {
-        unordered_map<int,int>ump;
-        dp.resize(nums.size(),-1);
-        for(int i=0;i<nums.size();i++)
-        {
-            ump[nums[i]]=i;
-        }
+        unordered_set<int>ust(nums.begin(),nums.end());
         int ans=0;
-        for(int i=0;i<nums.size();i++)
+        for(auto it:nums)
         {
-            ans=max(ans,recu(ump,i,nums));
+            if(ust.find(it)==ust.end())continue ;
+            int temp=0;
+            queue<int>q;//at most 2 ele at a time
+            q.push(it);
+            ust.erase(it);
+            while(!q.empty())
+            {
+                int ele=q.front();
+                temp++;
+                q.pop();
+                if(ust.find(ele+1)!=ust.end())
+                {
+                    ust.erase(ele+1);//remove repetetions
+                    q.push(ele+1);
+                }
+                if(ust.find(ele-1)!=ust.end())
+                {
+                    ust.erase(ele-1);
+                    q.push(ele-1);
+                }
+            }
+            ans=max(ans,temp);
         }
         return ans;
     }
