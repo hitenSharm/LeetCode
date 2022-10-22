@@ -1,14 +1,5 @@
 class Solution {
-public:
-    
-    bool notValid(unordered_map<char,int>& req,unordered_map<char,int>& compare)
-    {
-        for(auto i:req)
-        {
-            if(i.second>compare[i.first])return true;
-        }
-        return false;
-    }
+public:        
     
     string getString(int i,int j,string& s)
     {
@@ -23,8 +14,7 @@ public:
     }
     
     string minWindow(string s, string t) {
-        unordered_map<char,int>req;
-        unordered_map<char,int>compare;
+        unordered_map<char,int>req;       
         
         if(s.size()<t.size())return "";
         
@@ -34,25 +24,34 @@ public:
         }
         
         int i=0,j=0;
+        int cnt=t.size();
         int ans=INT_MAX;
         int ni,nj;
         while(i<s.size())
         {
-            while(j<s.size() and notValid(req,compare))
-            {
-                //cout<<s[j]<<" ";
-                compare[s[j]]++;
+            while(cnt>0 and j<s.size()){
+                if(req[s[j]]>0)cnt--; //means its in actual t string(>0 condition)
+                req[s[j]]--;//
+              //  cout<<s[j]<<" ";
                 j++;
             }
+            //cout<<endl;            
+            //remove unnecessary
+            //cout<<"removal \n";
+            while(i<s.size() and req[s[i]]<0 and i<j)//less than 0 means unnecessary
+            {
+              //  cout<<s[i]<<" ";
+                req[s[i]]++;                
+                i++;
+            }
             //cout<<endl;
-            if(!notValid(req,compare)){
-                if(ans>j-i){
+            if(ans>j-i and cnt==0){
                     ans=j-i;
                     ni=i;
                     nj=j-1;
-                }
             }
-            compare[s[i]]--;
+            cnt++;//now i am at neccesary char
+            req[s[i]]++;
             i++;
         }
         if(ans!=INT_MAX)
