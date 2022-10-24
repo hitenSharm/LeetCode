@@ -1,7 +1,6 @@
 # Number of Coins
-## Medium 
-<div class="problem-statement">
-                <p></p><p><span style="font-size:18px">Given a value <strong>V</strong> and array <strong>coins[]</strong> of size <strong>M</strong>, the task is to make the change for <strong>V</strong> cents, given that you have an infinite supply of each of coins{coins<sub>1</sub>, coins<sub>2</sub>, ..., coins<sub>m</sub>} valued coins. Find the minimum number of coins to make the change. If not possible to make change then return -1.</span></p>
+## Medium
+<div class="problems_problem_content__Xm_eO"><p><span style="font-size:18px">Given a value <strong>V</strong> and array <strong>coins[]</strong> of size <strong>M</strong>, the task is to make the change for <strong>V</strong> cents, given that you have an infinite supply of each of coins{coins<sub>1</sub>, coins<sub>2</sub>, ..., coins<sub>m</sub>} valued coins. Find the minimum number of coins to make the change. If not possible to make change then return -1.</span></p>
 
 <p><br>
 <span style="font-size:18px"><strong>Example 1:</strong></span></p>
@@ -28,5 +27,4 @@ You don't need to read input or print anything. Complete the function <strong><c
 <strong>Constraints:</strong><br>
 1 ≤ <strong>V*M</strong> ≤ 10<sup>6</sup><br>
 All array elements are distinct</span></div>
- <p></p>
-            </div>
+</div>
