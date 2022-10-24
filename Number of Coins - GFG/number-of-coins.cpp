@@ -1,35 +1,40 @@
-// { Driver Code Starts
+//{ Driver Code Starts
 #include <bits/stdc++.h>
 using namespace std;
 
- // } Driver Code Ends
+// } Driver Code Ends
 class Solution{
 
 	public:
-    vector<vector<int>>dp;
-
-	int recu(int coins[], int M, int V,int index)
+	vector<vector<int>>dp;
+	
+	int recu(int coins[],int n,int t,int idx)
 	{
-		if(V==0)return 0;
-		if(V<0 || index>=M)return 100001;
-
-		if(dp[index][V]!=-1)return dp[index][V];
-
-		return dp[index][V]=min(1+recu(coins,M,V-coins[index],index+1),min(recu(coins,M,V,index+1),1+recu(coins,M,V-coins[index],index)));
+	    if(t==0)return 0;
+	    if(idx>=n || coins[idx]>t || t<0)return -1;
+	    if(dp[t][idx]!=-2)return dp[t][idx];
+	    
+	    int take=recu(coins,n,t-coins[idx],idx);//case of 5,1 and need 16
+	    int noTake=recu(coins,n,t,idx+1);
+	    if(take!=-1 and noTake!=-1){
+	        return dp[t][idx]=min(1+take,noTake);
+	    }
+	    else if(take!=-1){
+	        return dp[t][idx]=1+take;
+	    }
+	    return dp[t][idx]=noTake;
 	}
-
+	
 	int minCoins(int coins[], int M, int V) 
 	{ 
-		dp.resize(M,vector<int>(V+1,-1));
-	    sort(coins,coins+M,greater<int>());
-	    int ans=recu(coins,M,V,0);
-	    if(ans>=100001)ans=-1;
-	    return ans;
+	    sort(coins,coins+M);
+	    dp.resize(V+1,vector<int>(M,-2));
+	    return recu(coins,M,V,0);
 	} 
 	  
 };
 
-// { Driver Code Starts.
+//{ Driver Code Starts.
 int main() 
 {
    
@@ -52,4 +57,5 @@ int main()
     }
     return 0;
 }
-  // } Driver Code Ends
+
+// } Driver Code Ends
