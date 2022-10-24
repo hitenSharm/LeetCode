@@ -6,30 +6,29 @@ using namespace std;
 class Solution{
 
 	public:
-	vector<vector<int>>dp;
+	vector<int>dp;
+	//v*m memoise method -> v*m and v memoise also possible
 	
-	int recu(int coins[],int n,int t,int idx)
+	int recu(int coins[],int n,int t)
 	{
 	    if(t==0)return 0;
-	    if(idx>=n || coins[idx]>t || t<0)return -1;
-	    if(dp[t][idx]!=-2)return dp[t][idx];
-	    
-	    int take=recu(coins,n,t-coins[idx],idx);//case of 5,1 and need 16
-	    int noTake=recu(coins,n,t,idx+1);
-	    if(take!=-1 and noTake!=-1){
-	        return dp[t][idx]=min(1+take,noTake);
+	    if(t<0)return -1;
+	    if(dp[t]!=-2)return dp[t];
+	    int ans=INT_MAX;
+	    for(int i=0;i<n;i++)
+	    {
+	        int temp=recu(coins,n,t-coins[i]);
+	        if(temp!=-1)ans=min(ans,1+temp);
 	    }
-	    else if(take!=-1){
-	        return dp[t][idx]=1+take;
-	    }
-	    return dp[t][idx]=noTake;
+	    if(ans==INT_MAX)ans=-1;
+	    return dp[t]=ans;
 	}
 	
 	int minCoins(int coins[], int M, int V) 
 	{ 
 	    sort(coins,coins+M);
-	    dp.resize(V+1,vector<int>(M,-2));
-	    return recu(coins,M,V,0);
+	    dp.resize(V+1,-2);
+	    return recu(coins,M,V);
 	} 
 	  
 };
