@@ -3,33 +3,35 @@ public:
     vector<vector<int>> fourSum(vector<int>& nums, int target) {
         sort(nums.begin(),nums.end());
         vector<vector<int>>ans;
-        long tag=target;
-        for(int i=0;i<nums.size();i++)
+        long t=target;
+        for(int i=0;i<nums.size();)
         {
-            if(i-1>=0 and nums[i]==nums[i-1])continue;
-            for(int j=i+1;j<nums.size();j++)
+            for(int j=i+1;j<nums.size();)
             {
-                if(nums[j]==nums[j-1] and (j-1)!=i)continue;
-                int l=j+1,r=nums.size()-1;
-                long t=tag-(nums[i]+nums[j]);
+                long long s=t-(nums[i]+nums[j]);
+                int l=j+1;
+                int r=nums.size()-1;
                 while(l<r)
                 {
-                    if(nums[l]+nums[r]<t)
-                        l++;
-                    else if(nums[l]+nums[r]>t)
-                        r--;
-                    else
+                    if(nums[l]+nums[r]==s)
                     {
                         ans.push_back({nums[i],nums[j],nums[l],nums[r]});
-                        int curr=nums[l];
-                        while(l<r and nums[l]==curr)
-                            l++;
-                        curr=nums[r];
-                        while(l<r and nums[r]==curr)
-                            r--;
+                        int ele=nums[l];
+                        while(l<r and ele==nums[l])l++;
+                        ele=nums[r];
+                        while(l<r and ele==nums[r])r--;
                     }
+                    else if(nums[l]+nums[r]<s){
+                        l++;
+                    }
+                    else
+                        r--;
                 }
+                int ele=nums[j];
+                while(j<nums.size() and ele==nums[j])j++;
             }
+            int ele=nums[i];
+            while(i<nums.size() and ele==nums[i])i++;
         }
         return ans;
     }
