@@ -1,11 +1,11 @@
-// { Driver Code Starts
+//{ Driver Code Starts
 // Program to find minimum number of platforms
 // required on a railway station
 #include <bits/stdc++.h>
 using namespace std;
 
 
- // } Driver Code Ends
+// } Driver Code Ends
 class Solution{
     public:
     //Function to find the minimum number of platforms required at the
@@ -13,24 +13,30 @@ class Solution{
     int findPlatform(int arr[], int dep[], int n)
     {
     	sort(arr,arr+n);
-        sort(dep,dep+n);        
-        int stations=0;
-        int i=0,j=0;
-        while(i<n)
-        {            
-            while(j<n and arr[j]<=dep[i])
-            {
-                j++;
-            }
-            stations=max(stations,j-i);
-            i++;
-        }
-        return stations;
+    	sort(dep,dep+n);
+    	int i=0,j=0;
+    	int cnt=0;
+    	int ans=0;
+    	while(i<n and j<n)
+    	{
+    	    if(arr[i]<=dep[j])
+    	    {
+    	        i++;
+    	        cnt++;
+    	        //need 1 more station
+    	    }
+    	    else{
+    	        j++;
+    	        cnt--;
+    	    }
+    	    ans=max(ans,cnt);
+    	}
+    	return ans;
     }
 };
 
 
-// { Driver Code Starts.
+//{ Driver Code Starts.
 // Driver code
 int main()
 {
@@ -51,4 +57,5 @@ int main()
         cout <<ob.findPlatform(arr, dep, n)<<endl;
     } 
    return 0;
-}  // } Driver Code Ends
+}
+// } Driver Code Ends
