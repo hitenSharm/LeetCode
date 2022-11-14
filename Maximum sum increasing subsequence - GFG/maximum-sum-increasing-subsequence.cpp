@@ -1,40 +1,30 @@
-// { Driver Code Starts
+//{ Driver Code Starts
 #include <bits/stdc++.h>
 using namespace std;
 
- // } Driver Code Ends
+// } Driver Code Ends
 class Solution{
-		
 
 	public:
-	vector<int>dp;
-	int recu(int arr[],int index,int& n)
-	{
-		if(index>=n)return 0;
-		if(dp[index]!=-1)return dp[index];
-		int curr=arr[index];
-		int ans=curr;
-		for(int i=index+1;i<n;i++)
-		{
-		    if(arr[i]>arr[index])
-			ans=max(ans,curr+recu(arr,i,n));
-		}
-		return dp[index]=ans;
-	}
-
 	int maxSumIS(int arr[], int n)  
 	{  
-	    dp.resize(n,-1);
-		int ans=0;
-	    for(int i=0;i<n;i++)
+	    int lis[n]={0};
+	    lis[0]=arr[0];
+	    for(int i=1;i<n;i++)
 	    {
-	    	ans=max(ans,recu(arr,i,n));
+	        lis[i]=arr[i];
+	        for(int j=0;j<i;j++)
+	        {
+	            if(arr[j]<arr[i]){
+	                lis[i]=max(lis[i],lis[j]+arr[i]);
+	            }
+	        }
 	    }
-	    return ans;
-	}    
+	    return *max_element(lis,lis+n);
+	}  
 };
 
-// { Driver Code Starts.
+//{ Driver Code Starts.
 int main() 
 {
    	
@@ -60,4 +50,5 @@ int main()
     return 0;
 }
 
-  // } Driver Code Ends
+
+// } Driver Code Ends
